@@ -123,7 +123,7 @@ def build_oo(seal, positions, key, target, dd):
 and just like that - we've completed guns.lol's PoW! yay!
 
 ## BE AWARE!
-this project is for **educational purposes** - to show the process of solving Proof-of-Work captchas. this **SHALL NOT** be used for any malicious intentions, as it is prohibited by [guns.lol's terms of service](https://guns.lol/terms):
+this project is for **educational purposes** - to show the process of solving Proof-of-Work captchas. this **SHALL NOT** be used for anything rather than learning how guns.lol Proof of Work captcha works, as using it to bot views, or any action that involves their PoW captcha is prohibited by [guns.lol's terms of service](https://guns.lol/terms):
 * Deploy, authorize, or benefit from automated scripts, bots, crawlers, or similar tools that interact with the Service without prior written permission.
 
 any action taken against your account that may result from using code in this github repo is **entirely** your fault. you have been warned.
