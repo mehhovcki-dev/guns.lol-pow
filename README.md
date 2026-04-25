@@ -35,7 +35,7 @@ def grab_tokens():
     match = re.compile(r"const\s+_gs_sets\s*=\s*\{([^}]*)\}", re.DOTALL).search(html)
     if not match:
         raise RuntimeError("_gs_sets not found / CF challenge or layout change")
-    body = match.group(1)
+    body = match.group(1).replace('\\"', '"').replace("\\'", "'")
 
     values = {}
     for match in re.compile(r"""([_A-Za-z][_A-Za-z0-9]*)\s*:\s*(?:'([^']*)'|"([^"]*)")""").finditer(body):
@@ -49,6 +49,8 @@ def grab_tokens():
         "_org_ts": values["_org_ts"],
         "_2xa":    values["_2xa"],
     }
+print(grab_tokens())
+# {'o09': '3ffcf8567b45ac19c1d6bf9e20b1770ce1068f3dc409b87e2659d6a132dfcc0a', '_n': 'auR64ybDXa6A5eyEsLIqsRiNEcqEIOE2', '_org_ts': '1777135187', '_2xa': 'oUAFJQw_BBsAAQIEA2blekXYbMz_Yzg4YTk4NzQzZDJjZmRjOGU1N2Y5MTE3ZGJjNGU4ZjZkOWU4NjU4MTBhZDBiY2Q1YTZmZDI2YTA1NDHTB1wf2McZRA'}
 ```
 anddd, we just did the easier part, congratulations! now, here comes the solver.
 
