@@ -14,8 +14,11 @@ def _b64ud(s: str) -> bytes:
 
 
 class GunsSolver:
+    """Mirror of `new GunsSolver(o09, dd, _org_ts, _n, _2xa)` in gpp_gunslol.js."""
+
     def __init__(self, _d: str, _dd: int, _h: str, _i: str, _x: str):
-        blob = _b64ud(_d)
+        # _d = o09, _dd = dd, _h = _org_ts, _i = _n, _x = _2xa
+        blob = _b64ud(_x)
         if blob[:2] != b"\xa1\x40":
             raise ValueError(f"bad _2xa magic: {blob[:2].hex()}")
         if blob[2] != _dd:
@@ -26,13 +29,13 @@ class GunsSolver:
         self.key       = blob[3 + 2 * _dd : 3 + 2 * _dd + 8]
         tmpl_off       = 3 + 2 * _dd + 8
         self.template  = blob[tmpl_off : tmpl_off + (64 - _dd)]
-        self.target    = bytes.fromhex(_h)
-        self.suffix    = (_i + _x).encode("ascii")
+        self.target    = bytes.fromhex(_d)
+        self.suffix    = (_i + _h).encode("ascii")
 
         if len(self.target) != 32:
-            raise ValueError(f"_h must be 64 hex chars, got {len(_h)}")
-        if len(_i) != 32 or len(_x) != 10:
-            raise ValueError(f"bad _i/_x lengths: {len(_i)}/{len(_x)}")
+            raise ValueError(f"o09 must be 64 hex chars, got {len(_d)}")
+        if len(_i) != 32 or len(_h) != 10:
+            raise ValueError(f"bad _n/_org_ts lengths: {len(_i)}/{len(_h)}")
 
         self.seal = bytearray(64)
         sorted_pos = sorted(self.positions)
@@ -73,9 +76,9 @@ class GunsSolver:
 if __name__ == "__main__":
     import sys
     if len(sys.argv) != 6:
-        print(f"usage: {sys.argv[0]} <_2xa> <dd> <o09> <_n> <_org_ts>", file=sys.stderr)
+        print(f"usage: {sys.argv[0]} <o09> <dd> <_org_ts> <_n> <_2xa>", file=sys.stderr)
         sys.exit(2)
-    _d, _dd, _h, _i, _x = sys.argv[1], int(sys.argv[2]), sys.argv[3], sys.argv[4], sys.argv[5]
-    out = GunsSolver(_d, _dd, _h, _i, _x).solve_pow()
+    o09, dd, _org_ts, _n, _2xa = sys.argv[1], int(sys.argv[2]), sys.argv[3], sys.argv[4], sys.argv[5]
+    out = GunsSolver(o09, dd, _org_ts, _n, _2xa).solve_pow()
     print("seal:", out["seal"])
     print("_oo: ", out["_oo"])
